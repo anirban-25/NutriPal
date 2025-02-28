@@ -4,7 +4,7 @@ import { db } from '@/firebase';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 
 const groq = new Groq({
-  apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY || "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"
+  apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY
 });
 
 // Maximum number of previous messages to include for context
