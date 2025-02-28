@@ -1,0 +1,63 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@firebase/auth": "^1.7.6",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^1.0.6",
+    "@huggingface/inference": "^2.8.1",
+    "@material-tailwind/react": "^2.1.9",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "axios": "^1.7.3",
+    "child_process": "^1.0.2",
+    "child-process": "^1.0.2",
+    "clsx": "^2.1.1",
+    "firebase": "^10.12.5",
+    "framer-motion": "^7.10.3",
+    "groq-sdk": "^0.7.0",
+    "ldrs": "^1.0.2",
+    "lucide-react": "^0.456.0",
+    "mini-svg-data-uri": "^1.4.4",
+    "next": "^14.2.5",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.73.1",
+    "pdfjs-dist": "^3.0.279",
+    "react": "^18.3.1",
+    "react-avataaars": "^0.2.3",
+    "react-datepicker": "^7.3.0",
+    "react-dom": "^18.3.1",
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.52.2",
+    "react-icons": "^5.2.1",
+    "react-pdf": "^9.1.0",
+    "react-slick": "^0.30.2",
+    "recharts": "^2.15.1",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.12",
+    "tailwind-merge": "^2.4.0",
+    "wscat": "^6.0.1"
+  },
+  "browser": {
+    "child_process": false
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+}
