@@ -295,7 +295,7 @@ const FillForm = () => {
               <button
                 type="button"
                 onClick={nextStep}
-                className="px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-200"
+                className="px-6 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-200 z-50"
               >
                 Next
               </button>

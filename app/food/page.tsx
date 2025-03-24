@@ -8,6 +8,7 @@ import {
   getDocs,
   addDoc,
   Timestamp,
+  orderBy,
 } from "firebase/firestore";
 import RecipeChatbot from "@/botComponent/RecipeChatbot";
 import { app, db } from "../../firebase";
@@ -28,9 +29,10 @@ interface FoodItem {
   description: string;
 }
 
-interface Order extends FoodItem {
+interface FirestoreOrder extends Omit<FoodItem, 'id'> {
+  id?: string; // Firestore document ID
   orderedAt: Timestamp;
-  status: "pending" | "delivered" | "cancelled";
+  status: 'pending' | 'delivered' | 'cancelled';
 }
 
 interface WeeklyStats {
@@ -76,7 +78,7 @@ const Page = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const router = useRouter();
   const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<FirestoreOrder[]>([]);
   const [weeklyStats, setWeeklyStats] = useState<WeeklyStats[]>([]);
   const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
 
@@ -114,19 +116,57 @@ const Page = () => {
     }
   }, [userId]); // Add userId as a dependency
 
+  // Fetch orders when userId is available
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!userId) return;
+      
+      try {
+        const ordersRef = collection(db, "users", userId, "orders");
+        const q = query(ordersRef, orderBy("orderedAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        
+        const fetchedOrders = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            ...data,
+            id: doc.id,
+            orderedAt: data.orderedAt as Timestamp
+          } as FirestoreOrder;
+        });
+        
+        setOrders(fetchedOrders);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
+
   if (!userId) {
     return <div>Loading...</div>;
   }
   const handleOrderClick = async (food: FoodItem) => {
     try {
-      const orderData: Order = {
-        ...food,
+      // Omit the id from the food item and create the order data
+      const { id, ...foodWithoutId } = food;
+      
+      const orderData: Omit<FirestoreOrder, 'id'> = {
+        ...foodWithoutId,
         orderedAt: Timestamp.now(),
         status: "pending",
       };
 
-      await addDoc(collection(db, "users", userId, "orders"), orderData);
-      setOrders([...orders, orderData]);
+      const docRef = await addDoc(collection(db, "users", userId, "orders"), orderData);
+      
+      // Add the new order to the state with the Firestore document ID
+      const newOrder: FirestoreOrder = {
+        ...orderData,
+        id: docRef.id,
+      };
+      
+      setOrders([newOrder, ...orders]);
       setShowOrderModal(true);
     } catch (error) {
       console.error("Error placing order:", error);
@@ -281,27 +321,42 @@ const Page = () => {
 
             <Tab.Panel>
               <div className="space-y-4">
-                {orders.map((order, index) => (
-                  <div key={index} className="glassmorphism rounded-xl p-4">
-                    <h3 className="font-semibold text-white">{order.name}</h3>
-                    <p className="text-gray-300">
-                      Ordered at: {order.orderedAt.toDate().toLocaleString()}
-                    </p>
-                    <div className="mt-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          order.status === "delivered"
-                            ? "bg-green-600"
-                            : order.status === "cancelled"
-                            ? "bg-red-600"
-                            : "bg-yellow-600"
-                        } text-white`}
-                      >
-                        {order.status}
-                      </span>
-                    </div>
+                {orders.length === 0 ? (
+                  <div className="text-center text-gray-400 py-8">
+                    No orders found
                   </div>
-                ))}
+                ) : (
+                  orders.map((order) => (
+                    <div key={order.id} className="glassmorphism rounded-xl p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-semibold text-white text-lg">{order.name}</h3>
+                          <p className="text-gray-300 text-sm">
+                            Ordered: {order.orderedAt?.toDate().toLocaleString()}
+                          </p>
+                          <div className="mt-2 space-y-1 text-sm text-gray-300">
+                            <p>Protein: {order.protein}g</p>
+                            <p>Calories: {order.calories} kcal</p>
+                            <p>Price: ${order.price}</p>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <span
+                            className={`px-3 py-1 rounded-full text-sm ${
+                              order.status === "delivered"
+                                ? "bg-green-600"
+                                : order.status === "cancelled"
+                                ? "bg-red-600"
+                                : "bg-yellow-600"
+                            } text-white`}
+                          >
+                            {order.status}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </Tab.Panel>
 
@@ -345,7 +400,7 @@ const Page = () => {
           </Tab.Panels>
         </Tab.Group>
       </div>
-      <div className="min-h-screen bg-black relative overflow-hidden">
+      <div className=" bg-black relative overflow-hidden">
         {/* Your existing code... */}
         <RecipeChatbot />
       </div>

@@ -1,5 +1,15 @@
 "use client";
-import { Dumbbell, Brain, Bot, Pizza, Activity, Heart, Timer, Trophy, ArrowRight } from "lucide-react";
+import {
+  Dumbbell,
+  Brain,
+  Bot,
+  Pizza,
+  Activity,
+  Heart,
+  Timer,
+  Trophy,
+  ArrowRight,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -33,11 +43,17 @@ export default function Home() {
               <span className="font-bold text-xl">FitMed</span>
             </div>
             <div className="flex gap-8">
-              <Link href="/bot" className="hover:text-red-500 transition-colors relative group">
+              <Link
+                href="/bot"
+                className="hover:text-red-500 transition-colors relative group"
+              >
                 AI Bot
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
-              <Link href="/food" className="hover:text-red-500 transition-colors relative group">
+              <Link
+                href="/food"
+                className="hover:text-red-500 transition-colors relative group"
+              >
                 Food Delivery
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
@@ -54,20 +70,21 @@ export default function Home() {
               Where Fitness Meets Healthcare
             </h1>
             <p className="text-xl leading-8 text-gray-300 max-w-2xl mx-auto">
-              Advanced medical support tailored for fitness enthusiasts, athletes, and health-conscious individuals.
+              Advanced medical support tailored for fitness enthusiasts,
+              athletes, and health-conscious individuals.
             </p>
             <div className="flex items-center justify-center gap-x-6">
-              <button 
-                onClick={() => router.push("/login")}
+              <button
+                onClick={() => router.push("/fill-up-form")}
                 className="px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105"
               >
                 Start Your Journey
               </button>
-              <Link href="/login">
-              <button className="px-8 py-4 border border-red-600 rounded-lg font-semibold text-red-500 hover:bg-red-600/10 transition-all duration-300 flex items-center gap-2 group">
-                Explore Services
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <Link href="/explore">
+                <button className="px-8 py-4 border border-red-600 rounded-lg font-semibold text-red-500 hover:bg-red-600/10 transition-all duration-300 flex items-center gap-2 group">
+                  Explore Services
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
               </Link>
             </div>
           </div>
@@ -78,7 +95,7 @@ export default function Home() {
       <section className="relative py-24 px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <FeatureCard
+            <FeatureCard
               icon={<Bot className="h-6 w-6 text-red-500" />}
               title="AI Medical Assistant"
               description="24/7 health guidance powered by advanced AI"
@@ -106,7 +123,7 @@ export default function Home() {
       <section className="relative py-24 px-6 lg:px-8 bg-black/30">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          <StatCard
+            <StatCard
               icon={<Dumbbell className="h-8 w-8 text-red-500" />}
               value="100,000+"
               label="Active Athletes"
@@ -135,7 +152,8 @@ export default function Home() {
                 Ready to Elevate Your Performance?
               </h2>
               <p className="mx-auto max-w-xl text-lg text-white/90 mb-10">
-                Join elite athletes and fitness enthusiasts who trust our platform for their health and performance needs.
+                Join elite athletes and fitness enthusiasts who trust our
+                platform for their health and performance needs.
               </p>
               <button className="px-8 py-4 bg-black text-white rounded-lg font-semibold hover:bg-black/90 transition-all duration-300 transform hover:scale-105">
                 Get Started Now
