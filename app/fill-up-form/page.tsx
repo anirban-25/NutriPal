@@ -20,7 +20,7 @@ const Page = () => {
             </div>
             <div className="flex gap-8">
               <Link
-                href="/bot"
+                href="/ChatWindow"
                 className="hover:text-red-500 transition-colors relative group"
               >
                 AI Bot

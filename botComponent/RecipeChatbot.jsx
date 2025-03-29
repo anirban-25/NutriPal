@@ -210,6 +210,9 @@ const RecipeChatbot = () => {
                   <div className="self-start bg text-black bg-gray-100 p-4 rounded-lg rounded-tl-none max-w-[80%] shadow-md">
                     <p className="whitespace-pre-wrap ">{recipe}</p>
                   </div>
+                  <div className='bg-red-500 shadow-lg cursor-pointer w-[80%] rounded-lg text-center flex text-white p-2 font-bold hover:bg-red-600 transition-all duration-3 00'>
+                  Place an order for this recipe
+                  </div>
                 </div>
               </div>
             )}
