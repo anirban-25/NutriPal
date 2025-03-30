@@ -17,6 +17,7 @@ import { getAuth, onAuthStateChanged } from "@firebase/auth";
 import { useRouter } from "next/navigation";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface FoodItem {
   id: number;
@@ -228,35 +229,33 @@ const Page = () => {
             <h2 className="text-2xl font-bold text-white mb-4">
               {selectedFood.name}
             </h2>
-            <p className="text-gray-300 mb-6">{selectedFood.description}</p>
+            <p className="text-gray-300 mb-4">{selectedFood.description}</p>
             <div className="grid grid-cols-2 gap-6 mb-6">
-              <div className="glassmorphism p-4 rounded-lg">
-                <p className="text-gray-800 font-bold">
-                  Protein: {selectedFood.protein}g
+              <div className="space-y-2 p-4 rounded-lg">
+                <p className="text-red-100 text-sm">
+                 • Protein: {selectedFood.protein}g
                 </p>
-                <p className="text-gray-800 font-bold">
-                  Calories: {selectedFood.calories} kcal
+                <p className="text-red-100 text-sm">
+                 • Calories: {selectedFood.calories} kcal
                 </p>
-              </div>
-              <div className="glassmorphism p-4 rounded-lg">
-                <p className="text-gray-800 font-bold">
-                  Fat: {selectedFood.fat}g
+                <p className="text-red-100 text-sm">
+                 • Fat: {selectedFood.fat}g
                 </p>
-                <p className="text-gray-800 font-bold">
-                  Carbs: {selectedFood.carbs}g
+                <p className="text-red-100 text-sm">
+                 • Carbs: {selectedFood.carbs}g
                 </p>
               </div>
             </div>
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setSelectedFood(null)}
-                className="px-6 py-2 rounded-full glassmorphism text-white hover:bg-white/20 transition-colors"
+                className="px-6 py-2 rounded-full bg-black text-white hover:bg-black/70 transition-colors duration-200"
               >
                 Close
               </button>
               <button
                 onClick={() => handleOrderClick(selectedFood)}
-                className="px-6 py-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors"
+                className="px-6 py-2 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-200"
               >
                 Order Now
               </button>
@@ -296,8 +295,13 @@ const Page = () => {
           <div className="flex justify-between items-center">
             <Link href="/">
             <div className="flex items-center gap-2 group">
-              <Heart className="h-6 w-6 text-red-500 group-hover:scale-110 transition-transform" />
-              <span className="font-bold text-xl">FitMed</span>
+              <Link href="/">
+            <Image 
+              src="/logo.png"
+              width={100}
+              height={100}
+              alt="Picture of the author"/>
+              </Link>
             </div>
             </Link>
             <div className="flex gap-8">
@@ -364,7 +368,7 @@ const Page = () => {
                           <p className="text-gray-300 text-sm">
                             Ordered: {order.orderedAt?.toDate().toLocaleString()}
                           </p>
-                          <div className="mt-2 space-y-1 text-sm text-gray-300">
+                          <div className="mt-2 spac e-y-1 text-sm text-gray-300">
                             <p>Protein: {order.protein}g</p>
                             <p>Calories: {order.calories} kcal</p>
                             <p>Price: ${order.price}</p>

@@ -13,6 +13,8 @@ import {
   getDocs,
 } from "firebase/firestore";
 import UserInfo from "@/botComponent/UserInfo";
+import Image from "next/image";
+import Link from "next/link";
 
 interface Message {
   role: "user" | "assistant" | "system";
@@ -160,7 +162,6 @@ I'll use this information to provide more relevant assistance.`,
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading || !user) return;
@@ -217,10 +218,15 @@ I'll use this information to provide more relevant assistance.`,
       {/* Sidebar */}
       <div className="w-1/4 h-full border-r border-gray-800 shadow-sm overflow-x-scroll">
         <div className="p-4 h-full overflow-y-auto">
-          <div className="mb-6">
-            <h2 className="text-2xl text-center font-semibold text-white mb-2">
-              Nutripal
-            </h2>
+          <div className="mb-6 ">
+            <Link href="/" className="flex  justify-center mb-10">
+              <Image
+                src="/logo.png"
+                width={150}
+                height={100}
+                alt="Picture of the author"
+              />
+            </Link>
             <UserInfo user={user} onLogout={() => setUser(null)} />
           </div>
         </div>

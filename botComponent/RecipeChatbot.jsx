@@ -2,7 +2,8 @@ import { app } from '@/firebase';
 import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
+import { IoIosExpand } from "react-icons/io";
+import { BiCollapse } from "react-icons/bi";
 const RecipeChatbot = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -89,7 +90,7 @@ const RecipeChatbot = () => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="text-white hover:text-gray-200 transition-colors"
               >
-                {isExpanded ? '⊽' : '⊏'}
+                {isExpanded ? <BiCollapse />: <IoIosExpand /> }
               </button>
               <button 
                 onClick={() => setIsChatOpen(false)}

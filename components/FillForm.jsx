@@ -79,8 +79,16 @@ const FillForm = () => {
           const docSnapshot = await getDoc(docRef);
           if (docSnapshot.exists()) {
             const data = docSnapshot.data();
+            
+            // Properly convert Firestore timestamp to JavaScript Date
+            let dob = new Date();
+            if (data.dateOfBirth) {
+              // Check if it's a Firestore timestamp and convert appropriately
+              dob = data.dateOfBirth.toDate ? data.dateOfBirth.toDate() : new Date(data.dateOfBirth);
+            }
+            
             const formattedData = {
-              // dateOfBirth: data.dateOfBirth?.toDate() || new Date(), m r
+              dateOfBirth: dob,
               weight: data.weight || "",
               height: data.height || "",
               gender: data.gender || "",
@@ -111,21 +119,31 @@ const FillForm = () => {
       loadFormData();
     }
   }, [user]);
+
   const isFormChanged = () => {
-    if (!initialFormState) return true; // Allow submit if initial state isn't set yet
+  if (!initialFormState) return true; // Allow submit if initial state isn't set yet
+
+  // Convert both dates to ISO strings for proper comparison
+  const initialDateISO = initialFormState.dateOfBirth instanceof Date 
+    ? initialFormState.dateOfBirth.toISOString().split('T')[0] 
+    : null;
   
-    return (
-      initialFormState.dateOfBirth?.toISOString() !== dateOfBirth?.toISOString() ||
-      initialFormState.weight !== weight ||
-      initialFormState.height !== height ||
-      initialFormState.gender !== gender ||
-      initialFormState.medicalHistory !== medicalHistory ||
-      initialFormState.currentMedications !== currentMedications ||
-      initialFormState.allergies !== allergies ||
-      initialFormState.symptoms !== symptoms ||
-      (file && !file.url) // If a new file is uploaded
-    );
-  };
+  const currentDateISO = dateOfBirth instanceof Date 
+    ? dateOfBirth.toISOString().split('T')[0] 
+    : null;
+
+  return (
+    initialDateISO !== currentDateISO ||
+    initialFormState.weight !== weight ||
+    initialFormState.height !== height ||
+    initialFormState.gender !== gender ||
+    initialFormState.medicalHistory !== medicalHistory ||
+    initialFormState.currentMedications !== currentMedications ||
+    initialFormState.allergies !== allergies ||
+    initialFormState.symptoms !== symptoms ||
+    (file && !file.url) // If a new file is uploaded
+  );
+};
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -193,7 +211,8 @@ const FillForm = () => {
       }
   
       const newFormData = {
-        dateOfBirth: dateOfBirth || null,
+        // Convert dateOfBirth to Firestore timestamp
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
         gender: gender || null,
         weight: weight || null,
         height: height || null,
@@ -308,11 +327,11 @@ const FillForm = () => {
                   isFormValid() && !isLoading
                     ? "bg-green-500 hover:bg-green-600"
                     : "bg-gray-400 cursor-not-allowed"
-                } text-white rounded-lg transition-all duration-200 flex items-center`}
+                } text-white z-50 rounded-lg transition-all duration-200 flex items-center`}
               >
                 {isLoading ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="z-50 animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
